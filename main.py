@@ -17,7 +17,7 @@ hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 # load image
-image = cv2.imread('praca.jpg')
+image = cv2.imread('plaza1.jpg')
 image = cv2.resize(image, (1050, 650))
 
 # detect people in the image
