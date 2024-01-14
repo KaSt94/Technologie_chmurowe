@@ -1,9 +1,9 @@
 import cv2
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 import shutil
 import requests
-from flask import request
+
 
 # POKAZYWANIE ZDJĘCIA
 
@@ -18,7 +18,7 @@ from flask import request
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
 
-# WYKRYWANIE LUDZI NA ZDJĘCIU
+# WYKRYWANIE LUDZI NA ZDJĘCIU I POKAZYWANIE - ZE ZDJĘCIA W PROJEKCIE
 
 # initialize the HOG descriptor/person detector
 # hog = cv2.HOGDescriptor()
@@ -41,7 +41,7 @@ from flask import request
 # cv2.imshow("People detector", image)
 # cv2.waitKey(0)
 
-# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI
+# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(POBRANE ZDJĘCIE Z NETA - URL ZASZYTY W KODZIE)
 
 # initialize the HOG descriptor/person detector
 # hog = cv2.HOGDescriptor()
@@ -51,24 +51,30 @@ from flask import request
 # api = Api(app)
 #
 #
-# class PeopleDetector(Resource):
+# class PeopleDetector2(Resource):
+#
+#
 #     def get(self):
+#         url = 'https://wallpapercave.com/wp/wp7488219.jpg'
+#         response = requests.get(url, stream=True)
+#         with open('img.png', 'wb') as out_file:
+#             shutil.copyfileobj(response.raw, out_file)
+#
 #         # load image
-#         image = cv2.imread('plaza1.jpg')
-#         image = cv2.resize(image, (1050, 650))
+#         image = cv2.imread('img.png')
 #
 #         # detect people in the image
 #         (rects, weights) = hog.detectMultiScale(image, winStride=(4, 4), padding=(8, 8), scale=1.05)
 #
-#         return {'PeopleCount': len(rects)}
+#         return {'PeopleCount2': len(rects)}
 #
 #
-# api.add_resource(PeopleDetector, '/')
+# api.add_resource(PeopleDetector2, '/')
 #
 # if __name__ == '__main__':
 #     app.run(debug=True)
 
-# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(POBRANE ZDJĘCIE Z NETA - wpisanie URL w API)
+# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI ZE ZDJĘCIA W PROJEKCIE
 
 # initialize the HOG descriptor/person detector
 hog = cv2.HOGDescriptor()
@@ -78,19 +84,24 @@ app = Flask(__name__)
 api = Api(app)
 
 
-#https://wallpapercave.com/wp/wp7488219.jpg
+class PeopleDetector(Resource):
+    def get(self):
+        # load image
+        image = cv2.imread('plaza1.jpg')
+        image = cv2.resize(image, (1050, 650))
 
+        # detect people in the image
+        (rects, weights) = hog.detectMultiScale(image, winStride=(4, 4), padding=(8, 8), scale=1.05)
+
+        return {'PeopleCount': len(rects)}
+
+
+# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(POBRANE ZDJĘCIE Z NETA - URL PODAWANY W PRZEGLĄDARCE)
 
 class PeopleDetector2(Resource):
-
-
-    @app.route('/data')
-    def data():
-    # here we want to get the value of user (i.e. ?user=some-value)
-        url = request.args.get('url')
-
     def get(self):
-        url = 'https://wallpapercave.com/wp/wp7488219.jpg'
+        url = request.args.get("url")
+        print("ulr", url)
         response = requests.get(url, stream=True)
         with open('img.png', 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
@@ -100,9 +111,13 @@ class PeopleDetector2(Resource):
 
         # detect people in the image
         (rects, weights) = hog.detectMultiScale(image, winStride=(4, 4), padding=(8, 8), scale=1.05)
-
         return {'PeopleCount2': len(rects)}
 
+#https://wallpapercave.com/wp/wp7488219.jpg
+#https://cdn.stocksnap.io/img-thumbs/960w/business-people_TUH3TB1WYX.jpg
+
+
+api.add_resource(PeopleDetector, '/')
 
 api.add_resource(PeopleDetector2, '/')
 
@@ -111,4 +126,3 @@ if __name__ == '__main__':
 
 
 # ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(PRZESŁANE ZDJĘCIE(wczytane z folderu)
-
