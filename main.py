@@ -112,3 +112,4 @@ if __name__ == '__main__':
 
 # ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(PRZESŁANE ZDJĘCIE(wczytane z folderu)
 
+xxxxxxxxx
