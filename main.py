@@ -1,6 +1,9 @@
 import cv2
 from flask import Flask
 from flask_restful import Resource, Api
+import shutil
+import requests
+from flask import request
 
 # POKAZYWANIE ZDJĘCIA
 
@@ -40,12 +43,13 @@ from flask_restful import Resource, Api
 
 # ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI
 
-# # initialize the HOG descriptor/person detector
+# initialize the HOG descriptor/person detector
 # hog = cv2.HOGDescriptor()
 # hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 #
 # app = Flask(__name__)
 # api = Api(app)
+#
 #
 # class PeopleDetector(Resource):
 #     def get(self):
@@ -58,15 +62,13 @@ from flask_restful import Resource, Api
 #
 #         return {'PeopleCount': len(rects)}
 #
+#
 # api.add_resource(PeopleDetector, '/')
 #
 # if __name__ == '__main__':
 #     app.run(debug=True)
 
-# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(POBRANE ZDJĘCIE Z NETA)
-
-import shutil
-import requests
+# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(POBRANE ZDJĘCIE Z NETA - wpisanie URL w API)
 
 # initialize the HOG descriptor/person detector
 hog = cv2.HOGDescriptor()
@@ -76,7 +78,17 @@ app = Flask(__name__)
 api = Api(app)
 
 
+#https://wallpapercave.com/wp/wp7488219.jpg
+
+
 class PeopleDetector2(Resource):
+
+
+    @app.route('/data')
+    def data():
+    # here we want to get the value of user (i.e. ?user=some-value)
+        url = request.args.get('url')
+
     def get(self):
         url = 'https://wallpapercave.com/wp/wp7488219.jpg'
         response = requests.get(url, stream=True)
@@ -96,3 +108,7 @@ api.add_resource(PeopleDetector2, '/')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(PRZESŁANE ZDJĘCIE(wczytane z folderu)
+
