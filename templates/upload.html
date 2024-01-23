@@ -1,5 +1,5 @@
 <!doctype html>
-<title>Python Flask File Upload Example</title>
+<title>Upload Example</title>
 <h2>Select a file to upload</h2>
 <p>
 	{% with messages = get_flashed_messages() %}
@@ -14,7 +14,6 @@
 </p>
 {% if filename %}
 	<div>
-<!--		<img src="{{ url_for('display_image', filename=filename) }}">-->
 	</div>
 {% endif %}
 <form method="post" action="/" enctype="multipart/form-data">
