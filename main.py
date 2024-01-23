@@ -37,7 +37,7 @@ class PeopleDetector(Resource):
         return {'PeopleCount': len(rects)}
 
 
-# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(POBRANE ZDJĘCIE Z NETA - URL PODAWANY W PRZEGLĄDARCE)
+# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(URL PODAWANY W PRZEGLĄDARCE)
 
 
 class PeopleDetector2(Resource):
@@ -63,7 +63,7 @@ class PeopleDetector2(Resource):
 # https://thumbs.dreamstime.com/b/enamoured-couple-10989620.jpg
 
 
-# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(PRZESŁANE ZDJĘCIE(wczytane z folderu w przeglądarce)
+# ZWRACANIE INFORMACJI HTTPS - WYKRYWANIE LUDZI(ZDJĘCIE WCZYTANE W PRZEGLĄDARCE)
 
 
 def allowed_file(filename):
